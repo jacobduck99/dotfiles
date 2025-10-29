@@ -31,9 +31,6 @@ t() {
   # Window 2: Server
   tmux new-window  -t "$SESSION":2 -n server -c "$PROJECT" "$CMD_SERVER"
 
-  # Window 3: Logs
-  tmux new-window  -t "$SESSION":3 -n logs -c "$PROJECT" "tail -f \"$LOGFILE\""
-
   # Focus code window and attach
   tmux select-window -t "$SESSION":1
   tmux attach -t "$SESSION"
