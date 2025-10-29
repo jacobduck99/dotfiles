@@ -12,7 +12,7 @@ t() {
   local SESSION="dev"
   local PROJECT="$HOME/workspace/github.com/jacobduck99/delivery-tracker"
   local CMD_EDITOR="nvim ."
-  local CMD_SERVER="flask run --reload"   # <-- change to npm run dev if needed
+  local CMD_SERVER="bash -lc 'source venv/bin/activate && flask run --reload'"
   local LOGFILE="$PROJECT/app.log"        # or change if your log file is elsewhere
 
   # If session already exists, attach to it
