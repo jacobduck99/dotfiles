@@ -9,11 +9,19 @@ alias gd="git diff"
 
 # --- tmux dev workspace launcher ---
 t() {
-  local SESSION="dev"
-  local PROJECT="$HOME/workspace/github.com/jacobduck99/delivery-tracker"
-  local CMD_EDITOR="nvim ."
-  local CMD_SERVER="bash -lc 'source venv/bin/activate && flask run --reload'"
-  local LOGFILE="$PROJECT/app.log"        # or change if your log file is elsewhere
+    local SESSION="dev"
+    local PROJECT="$HOME/workspace/github.com/jacobduck99/delivery-tracker-v2"
+
+    # Editor
+    local CMD_EDITOR="nvim ."
+
+    # Frontend (React)
+    local CMD_FRONTEND="bash -lc 'npm run dev'"
+
+    # Backend (Flask)
+    local CMD_SERVER="bash -lc 'cd server && source .venv/bin/activate && python3 app.py'"
+
+    local LOGFILE="$PROJECT/app.log"
 
   # If session already exists, attach to it
   if tmux has-session -t "$SESSION" 2>/dev/null; then
@@ -35,4 +43,12 @@ t() {
   tmux select-window -t "$SESSION":1
   tmux attach -t "$SESSION"
 }
-# --- end ---
+
+export FLYCTL_INSTALL="$HOME/.fly"
+export PATH="$FLYCTL_INSTALL/bin:$PATH"
+
+
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
