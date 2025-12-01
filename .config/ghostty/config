@@ -36,7 +36,7 @@
 #
 # # Empty values are used to reset config keys to default.
 # key =
-#
+# I LOVED 0.85 BG OPACITY BEFORE
 # # Some config options have unique syntaxes for their value,
 # # which is explained in the docs for that config option.
 # # Just for example:
@@ -48,7 +48,7 @@ font-style-bold = ExtraBold
 font-style-italic = SemiBold Italic
 font-style-bold-italic = ExtraBold Italic
 font-size = 12
-background-opacity = 0.85
+background-opacity = 0.95 
 cursor-text = #FFFF00 
 background-blur = false 
 
