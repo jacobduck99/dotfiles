@@ -10,7 +10,7 @@ alias gd="git diff"
 # --- tmux dev workspace launcher ---
 t() {
     local SESSION="dev"
-    local PROJECT="$HOME/workspace/github.com/jacobduck99/delivery-tracker-v2"
+    local PROJECT="$HOME/workspace/github.com/jacobduck99/racex"
 
     # Editor
     local CMD_EDITOR="nvim ."
@@ -52,3 +52,7 @@ export PATH="$FLYCTL_INSTALL/bin:$PATH"
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# Generated for envman. Do not edit.
+[ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
+export PATH="$PATH:$HOME/go/bin"
