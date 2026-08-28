@@ -10,38 +10,14 @@ alias gd="git diff"
 # --- tmux dev workspace launcher ---
 t() {
     local SESSION="dev"
-    local PROJECT="$HOME/workspace/github.com/jacobduck99/racex"
+    local PROJECT="$HOME/workspace/github.com/jacobduck99"
 
-    # Editor
-    local CMD_EDITOR="nvim ."
+    if tmux has-session -t "$SESSION" 2>/dev/null; then
+        tmux attach -t "$SESSION"
+        return
+    fi
 
-    # Frontend (React)
-    local CMD_FRONTEND="bash -lc 'npm run dev'"
-
-    # Backend (Flask)
-    local CMD_SERVER="bash -lc 'cd server && source .venv/bin/activate && python3 app.py'"
-
-    local LOGFILE="$PROJECT/app.log"
-
-  # If session already exists, attach to it
-  if tmux has-session -t "$SESSION" 2>/dev/null; then
-    tmux attach -t "$SESSION"
-    return
-  fi
-
-  # Ensure project + log file exists
-  mkdir -p "$PROJECT"
-  [ -f "$LOGFILE" ] || touch "$LOGFILE"
-
-  # Window 1: Code
-  tmux new-session -d -s "$SESSION" -n code -c "$PROJECT" "$CMD_EDITOR"
-
-  # Window 2: Server
-  tmux new-window  -t "$SESSION":2 -n server -c "$PROJECT" "$CMD_SERVER"
-
-  # Focus code window and attach
-  tmux select-window -t "$SESSION":1
-  tmux attach -t "$SESSION"
+    tmux new-session -s "$SESSION" -c "$PROJECT"
 }
 
 export FLYCTL_INSTALL="$HOME/.fly"
@@ -56,3 +32,5 @@ export NVM_DIR="$HOME/.nvm"
 # Generated for envman. Do not edit.
 [ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
 export PATH="$PATH:$HOME/go/bin"
+export QT_QPA_PLATFORMTHEME=qt6ct
+. "$HOME/.cargo/env"
