@@ -10,7 +10,7 @@ alias gd="git diff"
 # --- tmux dev workspace launcher ---
 t() {
     local SESSION="dev"
-    local PROJECT="$HOME/workspace/github.com/jacobduck99"
+    local PROJECT="$HOME/workspace/github.com/jacobduck99/learn-file-storage-s3/"
 
     if tmux has-session -t "$SESSION" 2>/dev/null; then
         tmux attach -t "$SESSION"
@@ -34,3 +34,7 @@ export NVM_DIR="$HOME/.nvm"
 export PATH="$PATH:$HOME/go/bin"
 export QT_QPA_PLATFORMTHEME=qt6ct
 . "$HOME/.cargo/env"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
