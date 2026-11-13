@@ -10,7 +10,7 @@ exec --no-startup-id picom --config ~/.config/picom.conf
 exec --no-startup-id feh --bg-scale ~/Pictures/background/wallpaper.png
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 exec --no-startup-id nm-applet
-exec --no-startup-id google-chrome-stable
+exec --no-startup-id google-chrome
 exec --no-startup-id spotify
 exec --no-startup-id ghostty
 
