@@ -12,6 +12,7 @@ exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 exec --no-startup-id nm-applet
 exec --no-startup-id google-chrome-stable
 exec --no-startup-id spotify
+exec --no-startup-id ghostty
 
 # === Audio Control ===
 set $refresh_i3status killall -SIGUSR1 i3status
@@ -97,6 +98,7 @@ set $ws10 "10"
 
 # === Workspaces apps == 
 
+for_window [class="com.mitchellh.ghostty"] move to workspace $ws1
 for_window [class="Google-chrome"] move to workspace $ws2
 for_window [class="Spotify"] move to workspace $ws3
 
