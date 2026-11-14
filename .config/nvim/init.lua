@@ -180,6 +180,7 @@ vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
 -- Diagnostic keymaps
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
+vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror message' })
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
@@ -636,7 +637,8 @@ require('lazy').setup({
       vim.diagnostic.config {
         severity_sort = true,
         float = { border = 'rounded', source = 'if_many' },
-        underline = { severity = vim.diagnostic.severity.ERROR },
+        -- Squiggle errors and warnings only; hints (e.g. unused vars) would grey out text
+        underline = { severity = { min = vim.diagnostic.severity.WARN } },
         signs = vim.g.have_nerd_font and {
           text = {
             [vim.diagnostic.severity.ERROR] = '󰅚 ',
@@ -645,19 +647,8 @@ require('lazy').setup({
             [vim.diagnostic.severity.HINT] = '󰌶 ',
           },
         } or {},
-        virtual_text = {
-          source = 'if_many',
-          spacing = 2,
-          format = function(diagnostic)
-            local diagnostic_message = {
-              [vim.diagnostic.severity.ERROR] = diagnostic.message,
-              [vim.diagnostic.severity.WARN] = diagnostic.message,
-              [vim.diagnostic.severity.INFO] = diagnostic.message,
-              [vim.diagnostic.severity.HINT] = diagnostic.message,
-            }
-            return diagnostic_message[diagnostic.severity]
-          end,
-        },
+        -- Only show the message for the line the cursor is on (<leader>e for a popup)
+        virtual_text = { current_line = true, source = 'if_many', spacing = 2 },
       }
 
       -- LSP servers and clients are able to communicate to each other what features they support.
@@ -891,7 +882,7 @@ require('lazy').setup({
         -- <c-k>: Toggle signature help
         --
         -- See :h blink-cmp-config-keymap for defining your own keymap
-        preset = 'default',
+        preset = 'super-tab',
 
         -- For more advanced Luasnip keymaps (e.g. selecting choice nodes, expansion) see:
         --    https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
