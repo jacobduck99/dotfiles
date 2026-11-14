@@ -60,6 +60,7 @@ link .config/i3/config      .config/i3/config
 link .config/ghostty/config .config/ghostty/config
 link .config/nvim           .config/nvim
 link .tmux.conf             .tmux.conf   # add tmux
+link .prettierrc            .prettierrc
 
 # Post steps
 if command -v tmux >/dev/null 2>&1 && tmux has-session 2>/dev/null; then
