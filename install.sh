@@ -56,6 +56,7 @@ link() {
 # LINKS YOU WANT
 # ------------------
 link bashrc                 .bashrc
+link inputrc                .inputrc
 link .config/i3/config      .config/i3/config
 link .config/ghostty/config .config/ghostty/config
 link .config/nvim           .config/nvim

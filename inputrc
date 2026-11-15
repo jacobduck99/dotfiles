@@ -1,0 +1,12 @@
+$include /etc/inputrc
+
+# show vi mode at the start of the prompt: [I] = insert, [N] = normal
+set show-mode-in-prompt on
+set vi-ins-mode-string "[I] "
+set vi-cmd-mode-string "[N] "
+
+# keep Ctrl+L = clear screen in vi mode (both insert and normal)
+set keymap vi-insert
+"\C-l": clear-screen
+set keymap vi-command
+"\C-l": clear-screen
