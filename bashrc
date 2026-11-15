@@ -9,8 +9,12 @@ alias gd="git diff"
 
 # --- tmux dev workspace launcher ---
 t() {
-    local SESSION="dev"
-    local PROJECT="$HOME/workspace/github.com/jacobduck99/learn-file-storage-s3/"
+    # usage: t            -> session for the current directory
+    #        t some/dir   -> session for that directory
+    local PROJECT
+    PROJECT="$(cd "${1:-$PWD}" && pwd)" || return
+    local SESSION
+    SESSION="$(basename "$PROJECT" | tr '.:' '__')"
 
     if tmux has-session -t "$SESSION" 2>/dev/null; then
         tmux attach -t "$SESSION"
@@ -38,3 +42,6 @@ export QT_QPA_PLATFORMTHEME=qt6ct
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
+# vim motions on the command line (Esc = normal mode, i = insert)
+set -o vi
