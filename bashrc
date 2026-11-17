@@ -13,15 +13,30 @@ t() {
     #        t some/dir   -> session for that directory
     local PROJECT
     PROJECT="$(cd "${1:-$PWD}" && pwd)" || return
+    # inside ~/workspace/github.com/jacobduck99/<repo>/... -> session "<repo>", rooted at the repo
+    # at ~/workspace/github.com/jacobduck99 itself          -> session "jacobduck99"
+    local ROOT="$HOME/workspace/github.com/jacobduck99"
+    # anywhere else (e.g. ~) with no argument                -> session "jacobduck99"
+    if [[ "$PROJECT" == "$ROOT"/* ]]; then
+        local REL="${PROJECT#"$ROOT"/}"
+        PROJECT="$ROOT/${REL%%/*}"
+    elif [[ -z "$1" ]]; then
+        PROJECT="$ROOT"
+    fi
     local SESSION
     SESSION="$(basename "$PROJECT" | tr '.:' '__')"
 
-    if tmux has-session -t "$SESSION" 2>/dev/null; then
-        tmux attach -t "$SESSION"
-        return
+    # create the session (detached) if it doesn't exist yet
+    if ! tmux has-session -t "=$SESSION" 2>/dev/null; then
+        tmux new-session -d -s "$SESSION" -c "$PROJECT"
     fi
 
-    tmux new-session -s "$SESSION" -c "$PROJECT"
+    # inside tmux you can't attach (nesting), so switch instead
+    if [[ -n "$TMUX" ]]; then
+        tmux switch-client -t "=$SESSION"
+    else
+        tmux attach -t "=$SESSION"
+    fi
 }
 
 export FLYCTL_INSTALL="$HOME/.fly"
