@@ -48,6 +48,43 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
+# Auto-switch Node version via .nvmrc on cd (from the nvm README)
+cdnvm() {
+    command cd "$@" || return $?
+    nvm_path="$(nvm_find_up .nvmrc | command tr -d '\n')"
+
+    # No .nvmrc found: fall back to the default nvm version
+    if [[ ! $nvm_path = *[^[:space:]]* ]]; then
+        declare default_version
+        default_version="$(nvm version default)"
+
+        if [ "$default_version" = 'N/A' ]; then
+            nvm alias default node
+            default_version=$(nvm version default)
+        fi
+
+        if [ "$(nvm current)" != "${default_version}" ]; then
+            nvm use default
+        fi
+    elif [[ -s "${nvm_path}/.nvmrc" && -r "${nvm_path}/.nvmrc" ]]; then
+        declare nvm_version
+        nvm_version=$(<"${nvm_path}"/.nvmrc)
+
+        declare locally_resolved_nvm_version
+        locally_resolved_nvm_version=$(nvm ls --no-colors "${nvm_version}" | command tail -1 | command tr -d '\->*' | command tr -d '[:space:]')
+
+        # Install it if missing (nvm install also switches to it), otherwise switch
+        if [ "${locally_resolved_nvm_version}" = 'N/A' ]; then
+            nvm install "${nvm_version}"
+        elif [ "$(nvm current)" != "${locally_resolved_nvm_version}" ]; then
+            nvm use "${nvm_version}"
+        fi
+    fi
+}
+
+alias cd='cdnvm'
+cdnvm "$PWD"
+
 # Generated for envman. Do not edit.
 [ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
 export PATH="$PATH:$HOME/go/bin"
