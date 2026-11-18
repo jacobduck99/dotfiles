@@ -647,9 +647,18 @@ require('lazy').setup({
             [vim.diagnostic.severity.HINT] = '󰌶 ',
           },
         } or {},
-        -- Only show the message for the line the cursor is on (<leader>e for a popup)
-        virtual_text = { current_line = true, source = 'if_many', spacing = 2 },
+        -- Inline virtual text gets cut off at the edge of narrow vsplits, so it's off.
+        -- Instead a floating popup opens on CursorHold (below); floats wrap and can
+        -- extend over neighbouring splits. <leader>e still opens it manually.
+        virtual_text = false,
       }
+
+      vim.api.nvim_create_autocmd('CursorHold', {
+        group = vim.api.nvim_create_augroup('diagnostic-float-on-hold', { clear = true }),
+        callback = function()
+          vim.diagnostic.open_float(nil, { focus = false, scope = 'cursor' })
+        end,
+      })
 
       -- LSP servers and clients are able to communicate to each other what features they support.
       --  By default, Neovim doesn't support everything that is in the LSP specification.
